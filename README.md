@@ -24,4 +24,15 @@
 
 ```bash
 ./mvnw clean install
+```
+Once the application starts, you can call the login API:
+
+http://localhost:8080/auth/login?username=user1&password=pass
+
+This will return a **JWT token** as part of the response.  
+
+You can then use this token to call the protected endpoint:
+
+```bash
+curl -H "Authorization: Bearer <token>" http://localhost:8080/hello
 

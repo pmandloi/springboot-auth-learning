@@ -1,38 +1,45 @@
-# Api Access Via JWT Token
+# Spring Boot + Redis (Docker) Demo
+
+This is a simple demo project showing how to integrate **Redis** with **Spring Boot** using `RedisTemplate`.  
+It demonstrates storing and retrieving basic **key-value pairs** in Redis.
 
 ---
 
-## ⚡ Features Implemented
+## 🚀 Prerequisites
 
-- **JWT Token Generation**  
-  Generates a JWT token on successful login with a username/password.
-
-- **JWT Token Validation**  
-  Validates the JWT token for protected endpoints.
-
-- **Spring Security Integration**  
-  Secures APIs using Spring Security filters.
-
-- **Sample Endpoint**
-    - `/hello` → a protected endpoint returning a greeting.
+- [Docker Desktop](https://www.docker.com/products/docker-desktop) installed and running
+- JDK 8+
+- Maven or Gradle
 
 ---
 
-## 🔧 How to Run
+## 🐳 Running Redis in Docker
 
-1. **Build the project** using Maven wrapper:
+1. Start a Redis container:
+   ```bash
+   docker run -d --name redis-test -p 6379:6379 redis
+2. Check if Redis is running:
+   ```bash
+   docker ps
+3. Access Redis CLI
+   ```bash
+   docker exec -it redis redis-cli
+   
+## ⚙️ Project Setup
+1. Clone or create a new Spring Boot project with the following dependency in pom.xml:
+    ```xml
+   <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+2. Add Redis configuration in application.properties:
+    ```properties
+    spring.application.name=redis-demo
+    spring.redis.host=localhost
+    spring.redis.port=6379
 
+## 🔍 Test the Endpoints
+    
 ```bash
-./mvnw clean install
-```
-Once the application starts, you can call the login API:
-
-http://localhost:8080/auth/login?username=user1&password=pass
-
-This will return a **JWT token** as part of the response.  
-
-You can then use this token to call the protected endpoint:
-
-```bash
-curl -H "Authorization: Bearer <token>" http://localhost:8080/hello
-
+    curl -X POST "http://localhost:8080/redis/save?key=testKey&value=hello"
+    curl "http://localhost:8080/redis/get?key=testKey"
